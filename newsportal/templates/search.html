@@ -1,0 +1,46 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% block title %}
+Новости
+{% endblock title %}
+
+{% block content %}
+<h1>Найти пост:</h1>
+   <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+   </form>
+
+    <p></p>
+<h4>Всего постов найдено: {{news_list|length}} </h4>
+
+     <table border="1" align="center">
+            <tr bgcolor="9BA5F7">
+               <td width="400"><b>Заголовок</b></td>
+               <td width="180"><b>Дата публикации</b></td>
+               <td width="700"><b>Превью</b></td>
+               <td width="120"><b>Автор</b></td>
+               <td width="250"><b>Категории</b></td>
+                <td width="80"><b>Тип</b></td>
+            </tr>
+            {% for news in news_list %}
+                <tr>
+                    <td align="left"><a href="http://127.0.0.1:8000/news/{{news.id}}">{{news.title|correct_text}}</a></td>
+                    <td>{{news.posted|date:'d M Y'}}</td>
+                    <td align="left">{{news.text|truncatewords:20|correct_text }}</td>
+                    <td align="center">{{news.author}}</td>
+                    <td align="left">|
+                        {% for c in news.category.all %}
+                            {{ c.name }} |
+                        {% endfor %}
+                    <td align="center">{{ news.get_type_display }}</td>
+                    </td>
+
+                </tr>
+                <tr height="20"></tr>
+            {% endfor %}
+     </table>
+<p></p>
+
+
+{% endblock content %}

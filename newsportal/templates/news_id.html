@@ -1,0 +1,40 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% block title %}
+{{ news_id.title }}
+{% endblock title %}
+
+{% block content %}
+<h1>{{ news_id.title|correct_text }}</h1>
+<hr>
+<p align="left">
+    <i>Опубликовано</i>: {{news_id.posted|date:'d M Y'}}
+</p>
+<p align="justify">
+    {{ news_id.text|correct_text }}
+</p>
+<p align="justify">
+    <i>Автор публикации: </i>{{ news_id.author }}
+</p>
+<p align="justify">
+    <i>Тип публикации: </i>{{ news_id.get_type_display }}
+</p>
+<p align="justify">
+    <i>Категории: </i>|
+        {% for c in news_id.category.all %}
+            {{ c.name }} |
+        {% endfor %}
+</p>
+<p align="left">
+{% if news_id.type == 'A'%}
+    ❌<a href="{{news_id.id}}/delete">Удалить статью</a>
+    <br>
+    ✏<a href="{{news_id.id}}/edit">Редактировать статью</a>
+{% endif %}
+{% if news_id.type == 'N'%}
+    ❌<a href="{{news_id.id}}/delete">Удалить новость</a>
+    <br>
+    ✏<a href="{{news_id.id}}/edit">Редактировать новость</a>
+{% endif %}
+</p>
+{% endblock content %}
